@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class camera : MonoBehaviour
+public class DefenseMode : MonoBehaviour
 {
     float moveSpeed = 10f;
 
@@ -11,9 +11,15 @@ public class camera : MonoBehaviour
     public Transform CameraArm;
 
     bool isDodge = false;
+    public bool doctor = false;
+
 
     Rigidbody rb;
     Animator animator;
+
+    
+
+    
     void Start()
     {
 
@@ -21,22 +27,19 @@ public class camera : MonoBehaviour
         Debug.Log(animator);
     }
 
-// Update is called once per frame
+    // Update is called once per frame
     void Update()
     {
         Move();
         LookAround();
 
-        if (Input.GetButtonDown("Jump")) 
+        if (Input.GetButtonDown("Jump"))
         {
             Dodge();
         }
 
 
-        if (Input.GetMouseButtonDown(0)) 
-        {
-            Attack();
-        }
+       
     }
     void Move()
     {
@@ -61,7 +64,7 @@ public class camera : MonoBehaviour
 
 
             User.forward = lookForward;
-            
+
             transform.position += moveDir * moveSpeed * Time.deltaTime;
         }
 
@@ -90,7 +93,7 @@ public class camera : MonoBehaviour
     }
 
 
-    void Dodge() 
+    void Dodge()
     {
         moveSpeed *= 2;
         animator.SetTrigger("doDodge");
@@ -99,16 +102,10 @@ public class camera : MonoBehaviour
         Invoke("DodgeOut", 0.4f);
     }
 
-    void DodgeOut() 
+    void DodgeOut()
     {
         moveSpeed *= 0.5f;
         isDodge = false;
     }
-
-    void Attack() 
-    {
-        
-    }
-
 
 }
