@@ -10,9 +10,13 @@ public class camera : MonoBehaviour
     public Transform User;
     public Transform CameraArm;
 
+    bool isDodge = false;
+
+    Rigidbody rb;
     Animator animator;
     void Start()
     {
+
         animator = CharactorBody.GetComponent<Animator>();
         Debug.Log(animator);
     }
@@ -22,6 +26,17 @@ public class camera : MonoBehaviour
     {
         Move();
         LookAround();
+
+        if (Input.GetButtonDown("Jump")) 
+        {
+            Dodge();
+        }
+
+
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            Attack();
+        }
     }
     void Move()
     {
@@ -46,7 +61,7 @@ public class camera : MonoBehaviour
 
 
             User.forward = lookForward;
-            //CharactorBody.forward = lookForward;
+            
             transform.position += moveDir * moveSpeed * Time.deltaTime;
         }
 
@@ -70,11 +85,30 @@ public class camera : MonoBehaviour
         {
             x = Mathf.Clamp(x, 335f, 361f);
         }
-
-
         //카메라의 회전을 하고싶다. 근데 회전의 변수 타입은 quaternion인데 euler로 계산한다.
         CameraArm.rotation = Quaternion.Euler(camAngle.x - mouseDelta.y, camAngle.y + mouseDelta.x, camAngle.z);
-
     }
+
+
+    void Dodge() 
+    {
+        moveSpeed *= 2;
+        animator.SetTrigger("doDodge");
+        isDodge = true;
+
+        Invoke("DodgeOut", 0.4f);
+    }
+
+    void DodgeOut() 
+    {
+        moveSpeed *= 0.5f;
+        isDodge = false;
+    }
+
+    void Attack() 
+    {
+        
+    }
+
 
 }
